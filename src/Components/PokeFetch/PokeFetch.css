@@ -28,8 +28,14 @@
   margin-left: 18vw;
 }
 
-.pokeImg {
+.pokeImgDark {
   width: 500px;
+  filter: brightness(0%)
+}
+
+.pokeImgLight {
+  width: 500px;
+  filter: brightness(100%)
 }
 
 .pokeName {

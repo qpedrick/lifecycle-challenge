@@ -9,6 +9,9 @@ class PokeFetch extends Component {
       pokeInfo: '',
       pokeSprite: '',
       pokeName: '',
+      time: 10,
+      style: {},
+      isRunning: false,
     }
   }
 
@@ -29,14 +32,51 @@ class PokeFetch extends Component {
       .catch((err) => console.log(err))
   }
 
+  decrement () {
+    if((this.state.time > 0) && (this.state.isRunning === true)) {
+    this.setState((prevState) => ({ time: prevState.time - 1 }))
+    //console.log(this.state.time)
+      } else {
+        this.stop()
+      }
+    }
+
+  start() {
+    this.setState({isRunning: true});
+    this.setState({time: 10})
+  }
+
+  stop() {
+    this.setState({isRunning: false})
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.decrement(), 1000)
+  }
+
+  componentDidUpdate() {
+    //this.interval = setInterval(() => this.decrement(), 1000)
+  }
+
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
+
   render() {
     return (
       <div className={'wrapper'}>
-        <button className={'start'} onClick={() => this.fetchPokemon()}>Start!</button>
-        <h1 className={'timer'} >Timer Display</h1>
+        <button className={'start'} onClick={() => {this.fetchPokemon(); this.start()}}>Start!</button>
+        <h1 className={'timer'} >{this.state.time}</h1>
         <div className={'pokeWrap'}>
-          <img className={'pokeImg'} src={this.state.pokeSprite} />
-          <h1 className={'pokeName'}>{this.state.pokeName}</h1>
+          {this.state.isRunning ? 
+          (<img className={'pokeImgDark'} src={this.state.pokeSprite} alt = {this.state.pokeName} />)
+          :
+          (<img className={'pokeImgLight'} src={this.state.pokeSprite} alt = {this.state.pokeName} />)
+          }
+          {this.state.isRunning ? 
+          (<></>) :
+          (<h1 className={'pokeName'}>{this.state.pokeName}</h1>)
+          }
         </div>
       </div>
     )
